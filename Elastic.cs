@@ -25,8 +25,8 @@ internal static class Elastic
   }
   public static string SearchTextSnippet(string text)//полнотекстовый поиск
   {
-    var searchResponse = Elastic.client.Search<TestText>(s => s.Index(Elastic.IndexName).Size(10)
-      .Query(q => q.QueryString(qs => qs.Query(text).AllowLeadingWildcard(true))));
+    var searchResponse = client.Search<TestText>(s => s.Index(Elastic.IndexName).Size(20)
+      .Query(q => q.Match(m => m.Field(f => f.text).Query(text))));
     var output = searchResponse.Hits.OrderBy(x => x.Source.created_date);
     StringBuilder sb = new();
     foreach (var record in output)
